@@ -7,7 +7,6 @@ function App() {
 
   if (value) {
     value.forEach((e) => {
-      console.log(e);
       res.push(
         <a href={e}>
           {e}
@@ -18,7 +17,7 @@ function App() {
   } else {
     res.push(
       <a
-        href="/test.html"
+        href="/"
         onClick={async (e) => {
           e.preventDefault();
 
