@@ -3,30 +3,37 @@ import "./App.css";
 
 function App() {
   const [value, setState] = useState();
+  const res = [];
 
-  return (
-    <div>
+  if (value) {
+    value.forEach((e) => {
+      console.log(e);
+      res.push(
+        <a href={e}>
+          {e}
+          <br></br>
+        </a>
+      );
+    });
+  } else {
+    res.push(
       <a
         href="/test.html"
-        onClick={(e) => {
+        onClick={async (e) => {
           e.preventDefault();
 
-          const Http = new XMLHttpRequest();
+          const response1 = await fetch("/getfile");
+          const result1 = await response1.json();
 
-          const url = "/getfile";
-
-          let temp = {};
-          Http.open("GET", url);
-          Http.send();
-          Http.onreadystatechange = (e) => {
-            console.log(Http.responseText.replace);
-          };
+          setState(result1);
         }}
       >
         파일확인하러 가기
       </a>
-    </div>
-  );
+    );
+  }
+
+  return <div>{res}</div>;
 }
 
 export default App;

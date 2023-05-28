@@ -19,6 +19,10 @@ server.get("/getfile", (req, res) => {
   });
 });
 
+server.get("/*", (req, res, next) => {
+  res.download(__dirname+"\\"+req.params[0]);
+});
+
 server.listen(80, (err) => {
   if (err) return console.log(err);
   console.log("The server is listening on port 80");
