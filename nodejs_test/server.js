@@ -19,9 +19,9 @@ server.get("/getfile", (req, res) => {
   });
 });
 
-server.get("/*", (req, res) => {
+server.get("/download/:name", (req, res) => {
   console.log("누군가 파일을 다운로드함");
-  res.download(__dirname+"\\"+req.params[0]);
+  res.download(__dirname+"\\"+req.params.name); 
 });
 
 server.listen(80, (err) => {

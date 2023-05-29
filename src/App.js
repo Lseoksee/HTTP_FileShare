@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { Button, Table } from "react-bootstrap";
+import { Button, Table} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Mainpage(params) {
@@ -20,7 +20,23 @@ function Filelist(params) {
     list.push(
       <tr>
         <td>
-          <a href={e}>{e}</a>
+          <a href={"download/" + e}>{e}</a>
+        </td>
+        <td>
+          <Button
+            variant="outline-warning"
+            onClick={async () => {
+              try {
+                let url = window.document.location.href;
+                await navigator.clipboard.writeText(url + "download/" + e);
+                alert("주소를 복사했습니다!");
+              } catch (error) {
+                console.log(error);
+              }
+            }}
+          >
+            주소복사
+          </Button>
         </td>
       </tr>
     );
@@ -29,10 +45,22 @@ function Filelist(params) {
   return (
     <div id="filelist">
       <div id="tablediv">
-        <Table id="filetable" striped bordered hover size="sm" style={{margin: "0"}}>
+        <Table
+          id="filetable"
+          striped
+          bordered
+          hover
+          size="sm"
+          style={{ margin: "0" }}
+        >
+          <colgroup>
+            <col width="80%" />
+            <col width="20%" />
+          </colgroup>
           <thead>
             <tr>
               <th>이름</th>
+              <th>공유하기</th>
             </tr>
           </thead>
           <tbody>{list}</tbody>
