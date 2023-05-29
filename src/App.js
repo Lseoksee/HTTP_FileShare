@@ -1,13 +1,13 @@
 import { useState } from "react";
 import "./App.css";
-import { Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Mainpage(params) {
   return (
-    <div className="maindiv">
-      <h1 className="title">친구들과 빠르게 파일을 공유해보세요!</h1>
-      <Button className="checkbt" onClick={params.btEV}>
+    <div id="maindiv">
+      <h1 id="title">친구들과 빠르게 파일을 공유해보세요!</h1>
+      <Button id="checkbt" onClick={params.btEV}>
         파일 확인하러가기
       </Button>
     </div>
@@ -18,14 +18,24 @@ function Filelist(params) {
   const list = [];
   params.value.forEach((e) => {
     list.push(
-      <a href={e}>
-        {e}
-        <br></br>
-      </a>
+      <tr>
+        <td>
+          <a href={e}>{e}</a>
+        </td>
+      </tr>
     );
   });
 
-  return <div>{list}</div>;
+  return (
+    <div id="filelist">
+      <Table border={1} id="filetable">
+        <tr>
+          <td>이름</td>
+        </tr>
+        {list}
+      </Table>
+    </div>
+  );
 }
 
 function App() {
@@ -49,7 +59,7 @@ function App() {
     );
   }
 
-  return <div>{res}</div>;
+  return <div id="home">{res}</div>;
 }
 
 export default App;
