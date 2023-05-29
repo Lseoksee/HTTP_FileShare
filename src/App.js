@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { Button, Table} from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Mainpage(params) {
@@ -51,7 +51,7 @@ function Filelist(params) {
           bordered
           hover
           size="sm"
-          style={{ margin: "0" }}
+          style={{ margin: "0", whiteSpace: "nowrap" }}
         >
           <colgroup>
             <col width="80%" />
