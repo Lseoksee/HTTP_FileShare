@@ -14,11 +14,10 @@
 
 #filelist {
     width: 50%;
-    height: 50%;
+    height: 90%;
+    text-align: center;
 }
 
 #filetable {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-top: 10%;
 }

@@ -28,12 +28,15 @@ function Filelist(params) {
 
   return (
     <div id="filelist">
-      <Table border={1} id="filetable">
-        <tr>
-          <td>이름</td>
-        </tr>
-        {list}
+      <Table id="filetable" striped bordered hover size="sm">
+        <thead>
+          <tr>
+            <th>이름</th>
+          </tr>
+        </thead>
+        <tbody>{list}</tbody>
       </Table>
+      <Button onClick={params.btEV}>갱신하기</Button>
     </div>
   );
 }
@@ -42,19 +45,21 @@ function App() {
   const [value, setState] = useState();
   let res;
 
+  const getfile = async (e) => {
+    e.preventDefault();
+
+    const response1 = await fetch("/getfile");
+    const result1 = await response1.json();
+
+    setState(result1);
+  };
+
   if (value) {
-    res = <Filelist value={value}></Filelist>;
+    res = <Filelist value={value} btEV={getfile}></Filelist>;
   } else {
     res = (
       <Mainpage
-        btEV={async (e) => {
-          e.preventDefault();
-
-          const response1 = await fetch("/getfile");
-          const result1 = await response1.json();
-
-          setState(result1);
-        }}
+        btEV={getfile}
       ></Mainpage>
     );
   }
