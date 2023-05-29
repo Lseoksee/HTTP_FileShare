@@ -28,14 +28,16 @@ function Filelist(params) {
 
   return (
     <div id="filelist">
-      <Table id="filetable" striped bordered hover size="sm">
-        <thead>
-          <tr>
-            <th>이름</th>
-          </tr>
-        </thead>
-        <tbody>{list}</tbody>
-      </Table>
+      <div id="tablediv">
+        <Table id="filetable" striped bordered hover size="sm" style={{margin: "0"}}>
+          <thead>
+            <tr>
+              <th>이름</th>
+            </tr>
+          </thead>
+          <tbody>{list}</tbody>
+        </Table>
+      </div>
       <Button onClick={params.btEV}>갱신하기</Button>
     </div>
   );
@@ -57,11 +59,7 @@ function App() {
   if (value) {
     res = <Filelist value={value} btEV={getfile}></Filelist>;
   } else {
-    res = (
-      <Mainpage
-        btEV={getfile}
-      ></Mainpage>
-    );
+    res = <Mainpage btEV={getfile}></Mainpage>;
   }
 
   return <div id="home">{res}</div>;

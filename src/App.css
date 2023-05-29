@@ -14,10 +14,12 @@
 
 #filelist {
     width: 50%;
-    height: 90%;
+    height: 85%;
     text-align: center;
 }
 
-#filetable {
-    margin-top: 10%;
+#tablediv {
+    max-height: 100%;
+    margin-bottom: 1em;
+    overflow: overlay;
 }
