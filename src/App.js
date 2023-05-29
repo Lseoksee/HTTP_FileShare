@@ -8,28 +8,34 @@ function Mainpage(params) {
     <div className="maindiv">
       <h1 className="title">친구들과 빠르게 파일을 공유해보세요!</h1>
       <Button className="checkbt" onClick={params.btEV}>
-        파일확인하러 가기
+        파일 확인하러가기
       </Button>
     </div>
-
   );
+}
+
+function Filelist(params) {
+  const list = [];
+  params.value.forEach((e) => {
+    list.push(
+      <a href={e}>
+        {e}
+        <br></br>
+      </a>
+    );
+  });
+
+  return <div>{list}</div>;
 }
 
 function App() {
   const [value, setState] = useState();
-  const res = [];
+  let res;
 
   if (value) {
-    value.forEach((e) => {
-      res.push(
-        <a href={e}>
-          {e}
-          <br></br>
-        </a>
-      );
-    });
+    res = <Filelist value={value}></Filelist>;
   } else {
-    res.push(
+    res = (
       <Mainpage
         btEV={async (e) => {
           e.preventDefault();
