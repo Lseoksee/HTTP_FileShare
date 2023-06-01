@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { Button, Table } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Utils from "../src/Utils";
 
 function Mainpage(params) {
   return (
@@ -15,12 +16,37 @@ function Mainpage(params) {
 }
 
 function Filelist(params) {
+  const [value, copyState] = useState();
+  const regex = /\.[^.\\/]*$/;
   const list = [];
+  let icon;
+
   params.value.forEach((e) => {
+    if (Utils.isvideo(e)) {
+      icon = "video.png";
+    } else if (Utils.isaudio(e)) {
+      icon = "music.png";
+    } else if (Utils.isphoto(e)) {
+      icon = "img.png";
+    } else {
+      icon = "doc.png";
+    }
+
     list.push(
       <tr>
         <td>
-          <a href={"download/" + e}>{e}</a>
+          <img
+            src={`${process.env.PUBLIC_URL}/${icon}`}
+            alt={icon}
+            width={"32px"}
+          ></img>
+        </td>
+        <td
+          onClick={() => {
+            if (regex.test(e)) window.location.href = "download/" + e;
+          }}
+        >
+          {regex.test(e) ? <a href={"download/" + e}>{e}</a> : <p>{e}</p>}
         </td>
         <td>
           <Button
@@ -28,14 +54,16 @@ function Filelist(params) {
             onClick={async () => {
               try {
                 let url = window.document.location.href;
+                console.log(url + "download/" + e);
                 await navigator.clipboard.writeText(url + "download/" + e);
                 alert("주소를 복사했습니다!");
+                copyState(e);
               } catch (error) {
                 console.log(error);
               }
             }}
           >
-            주소복사
+            {e === value ? "복사됨!" : "공유하기"}
           </Button>
         </td>
       </tr>
@@ -54,11 +82,13 @@ function Filelist(params) {
           style={{ margin: "0", whiteSpace: "nowrap" }}
         >
           <colgroup>
-            <col width="80%" />
+            <col width="10%" />
+            <col width="70%" />
             <col width="20%" />
           </colgroup>
           <thead>
             <tr>
+              <th></th>
               <th>이름</th>
               <th>공유하기</th>
             </tr>
