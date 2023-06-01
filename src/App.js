@@ -54,9 +54,13 @@ function Filelist(params) {
             onClick={async () => {
               try {
                 let url = window.document.location.href;
-                console.log(url + "download/" + e);
-                await navigator.clipboard.writeText(url + "download/" + e);
-                alert("주소를 복사했습니다!");
+                if (navigator.clipboard) {
+                  //http 프로토콜로 인한 복사 오류
+                  await navigator.clipboard.writeText(url + "download/" + e);
+                  alert("주소를 복사했습니다!");
+                } else {
+                  alert(url + "download/" + e);
+                }
                 copyState(e);
               } catch (error) {
                 console.log(error);
