@@ -13,7 +13,7 @@ class Utill {
       ".mpg",
       ".mpeg",
     ];
-    const extension = file.substring(file.lastIndexOf(".")); // 파일 이름에서 확장자 부분을 추출합니다.
+    const extension = file.substring(file.lastIndexOf("."));
 
     return videoExtensions.includes(extension.toLowerCase());
   }
@@ -31,7 +31,7 @@ class Utill {
       ".alac",
       ".opus",
     ];
-    const extension = file.substring(file.lastIndexOf(".")); // 파일 이름에서 확장자 부분을 추출합니다.
+    const extension = file.substring(file.lastIndexOf("."));
 
     return audioExtensions.includes(extension.toLowerCase());
   }
@@ -51,7 +51,7 @@ class Utill {
       ".raw",
       ".psd",
     ];
-    const extension = file.substring(file.lastIndexOf(".")); // 파일 이름에서 확장자 부분을 추출합니다.
+    const extension = file.substring(file.lastIndexOf("."));
 
     return photoExtensions.includes(extension.toLowerCase());
   }
