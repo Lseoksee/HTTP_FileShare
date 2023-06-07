@@ -14,7 +14,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         System.out.print("엔터키를 눌러 파일공유 서버를 작동시킵니다.");
         sc.nextLine();
-        System.out.println("\n종료하려면 stop을 입력하세요.");
+        System.out.println("종료하려면 stop을 입력하세요.\n");
 
         try {
             ProcessBuilder builder = new ProcessBuilder("node", "server.js");
