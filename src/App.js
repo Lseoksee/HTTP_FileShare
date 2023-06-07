@@ -4,6 +4,8 @@ import { Button, Table } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Utils from "../src/Utils";
 
+let reforder= "/";
+
 function Mainpage(params) {
   return (
     <div id="maindiv">
@@ -46,7 +48,11 @@ function Filelist(params) {
             if (regex.test(e)) window.location.href = "download/" + e;
           }}
         >
-          {regex.test(e) ? <a href={"download/" + e}>{e}</a> : <p>{e}</p>}
+          {regex.test(e) ? <a href={"download/" + e}>{e}</a> : <a href={"/"} onClick={ex=> {
+            reforder+=(e+"/");
+            ex.preventDefault();
+            params.btEV(ex, reforder);
+          }}> {e}</a>}
         </td>
         <td>
           <Button
@@ -109,12 +115,16 @@ function App() {
   const [value, setState] = useState();
   let res;
 
-  const getfile = async (e) => {
-    e.preventDefault();
+  const getfile = async (e, link) => {
+    let response1;
 
-    const response1 = await fetch("/getfile");
+    if (link) {
+      response1 = await fetch("/getfile"+link);
+    } else {
+      response1 = await fetch("/getfile");
+    }
+
     const result1 = await response1.json();
-
     setState(result1);
   };
 

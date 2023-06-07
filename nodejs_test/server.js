@@ -19,8 +19,19 @@ server.get("/getfile", (req, res) => {
   });
 });
 
+server.get("/getfile/:name", (req, res) => {
+  fs.readdir(__dirname+"/"+req.params["*"], (err, files) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("요청오류");
+    } else {
+      res.send(files);
+    }
+  });
+});
+
 server.get("/download/:name", (req, res) => {
-  console.log("누군가 파일을 다운로드함");
+  console.log(`${req.ip}가 다운로드함`);
   res.download(__dirname+"\\"+req.params.name);
 });
 
