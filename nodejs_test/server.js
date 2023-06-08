@@ -1,7 +1,7 @@
 const express = require("express");
 const server = express();
 const fs = require("fs");
-const setting = JSON.parse(fs.readFileSync(__dirname + "\\server.json"));
+const setting = JSON.parse(fs.readFileSync(__dirname + "/server.json"));
 const regex = /\.[^.\\/]*$/; //폴더 구분 정규식
 
 server.use(express.static(__dirname + "/../build"));
@@ -11,7 +11,7 @@ server.get("/", (req, res) => {
 });
 
 server.get("/getfile", (req, res) => {
-  const dir = __dirname+setting.dir;
+  const dir = __dirname + setting.dir;
 
   fs.readdir(dir, (err, files) => {
     if (err) {
@@ -31,7 +31,7 @@ server.get("/getfile", (req, res) => {
 });
 
 server.get("/getfile/*", (req, res) => {
-  const dir = __dirname+"/"+setting.dir+req.params[0];
+  const dir = __dirname + setting.dir + "/" + req.params[0];
 
   fs.readdir(dir, (err, files) => {
     if (err) {
@@ -51,8 +51,11 @@ server.get("/getfile/*", (req, res) => {
 });
 
 server.get("/download/*", (req, res) => {
+  const dir = __dirname + setting.dir + "/" + req.params[0];
+
   console.log(`${req.ip}가 다운로드함`);
-  res.download(__dirname + "\\" + req.params[0]);
+  console.log(dir);
+  res.download(dir);
 });
 
 server.listen(setting.port, (err) => {
