@@ -12,26 +12,46 @@ server.get("/", (req, res) => {
 server.get("/getfile", (req, res) => {
   const dir = __dirname + setting.dir;
 
-  const files = fs.readdirSync(dir, { withFileTypes: true }).map((file) => {
-    if (file.isDirectory()) {
-      return { name: file.name, isdir: true };
-    } else {
-      return { name: file.name, isdir: false };
-    }
-  });
+  const files = fs
+    .readdirSync(dir, { withFileTypes: true })
+    .map((file) => {
+      if (file.isDirectory()) {
+        return { name: file.name, isdir: true };
+      } else {
+        return { name: file.name, isdir: false };
+      }
+    })
+    .sort((a, b) => {
+      if (a.isdir === true) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+
   res.send(files);
 });
 
 server.get("/getfile/*", (req, res) => {
   const dir = __dirname + setting.dir + "/" + req.params[0];
 
-  const files = fs.readdirSync(dir, { withFileTypes: true }).map((file) => {
-    if (file.isDirectory()) {
-      return { name: file.name, isdir: true };
-    } else {
-      return { name: file.name, isdir: false };
-    }
-  });
+  const files = fs
+    .readdirSync(dir, { withFileTypes: true })
+    .map((file) => {
+      if (file.isDirectory()) {
+        return { name: file.name, isdir: true };
+      } else {
+        return { name: file.name, isdir: false };
+      }
+    })
+    .sort((a) => {
+      if (a.isdir === true) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+
   res.send(files);
 });
 
