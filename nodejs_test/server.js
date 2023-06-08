@@ -1,9 +1,7 @@
-/* 파일인데 폴더인척하는거 잡아야함 */
 const express = require("express");
 const server = express();
 const fs = require("fs");
 const setting = JSON.parse(fs.readFileSync(__dirname + "/server.json"));
-const regex = /\.[^.\\/]*$/; //폴더 구분 정규식
 
 server.use(express.static(__dirname + "/../build"));
 
@@ -14,41 +12,27 @@ server.get("/", (req, res) => {
 server.get("/getfile", (req, res) => {
   const dir = __dirname + setting.dir;
 
-  fs.readdir(dir, (err, files) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send("500");
+  const files = fs.readdirSync(dir, { withFileTypes: true }).map((file) => {
+    if (file.isDirectory()) {
+      return { name: file.name, isdir: true };
     } else {
-      files.sort((a, b) => {
-        if (regex.test(a)) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
-      res.send(files);
+      return { name: file.name, isdir: false };
     }
   });
+  res.send(files);
 });
 
 server.get("/getfile/*", (req, res) => {
   const dir = __dirname + setting.dir + "/" + req.params[0];
 
-  fs.readdir(dir, (err, files) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send("500");
+  const files = fs.readdirSync(dir, { withFileTypes: true }).map((file) => {
+    if (file.isDirectory()) {
+      return { name: file.name, isdir: true };
     } else {
-      files.sort((a) => {
-        if (regex.test(a)) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
-      res.send(files);
+      return { name: file.name, isdir: false };
     }
   });
+  res.send(files);
 });
 
 server.get("/download/*", (req, res) => {

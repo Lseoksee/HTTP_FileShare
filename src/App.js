@@ -19,7 +19,6 @@ function Mainpage(params) {
 
 function Filelist(params) {
   const [value, copyState] = useState();
-  const regex = /\.[^.\\/]*$/;
   const list = [];
   let copywindow;
   let url = window.document.location.href;
@@ -60,13 +59,13 @@ function Filelist(params) {
   }
 
   params.value.forEach((e) => {
-    if (Utils.isvideo(e)) {
+    if (Utils.isvideo(e.name)) {
       icon = "video.png";
-    } else if (Utils.isaudio(e)) {
+    } else if (Utils.isaudio(e.name)) {
       icon = "music.png";
-    } else if (Utils.isphoto(e)) {
+    } else if (Utils.isphoto(e.name)) {
       icon = "img.png";
-    } else if (!regex.test(e)) {
+    } else if (e.isdir) {
       icon = "logo512.png";
     } else {
       icon = "doc.png";
@@ -83,11 +82,11 @@ function Filelist(params) {
         </td>
         <td
           onClick={(ex) => {
-            if (regex.test(e)) {
-              window.location.href = "download" + reforder + e;
+            if (!e.isdir) {
+              window.location.href = "download" + reforder + e.name;
               //파일일때 표시
             } else {
-              reforder += e + "/";
+              reforder += e.name + "/";
               params.btEV(ex, reforder);
               copyState();
               //폴더일때 표시
@@ -95,20 +94,20 @@ function Filelist(params) {
           }}
           style={{ fontSize: "18px" }}
         >
-          {regex.test(e) ? (
-            <a href={"download" + reforder + e}>{e}</a>
+          {!e.isdir ? (
+            <a href={"download" + reforder + e.name}>{e.name}</a>
           ) : (
             <a
-              href={reforder + e}
+              href={reforder + e.name}
               onClick={(ex) => {
                 ex.preventDefault();
               }}
             >
-              {e}
+              {e.name}
             </a>
           )}
         </td>
-        {regex.test(e) ? (
+        {!e.isdir ? (
           //복사버튼
           <td>
             <Button
@@ -118,16 +117,16 @@ function Filelist(params) {
                   if (navigator.clipboard) {
                     //http 프로토콜로 인한 복사 오류
                     await navigator.clipboard.writeText(
-                      url + "download" + reforder + e
+                      url + "download" + reforder + e.name
                     );
                   }
-                  copyState(url + "download" + reforder + e);
+                  copyState(url + "download" + reforder + e.name);
                 } catch (error) {
                   console.log(error);
                 }
               }}
             >
-              {url + "download" + reforder + e === value && navigator.clipboard
+              {url + "download" + reforder + e.name === value && navigator.clipboard
                 ? "복사됨!"
                 : "공유하기"}
             </Button>
@@ -207,6 +206,7 @@ function App() {
     }
 
     const result1 = await response1.json();
+
     setState(result1);
   };
 
