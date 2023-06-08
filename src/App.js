@@ -23,6 +23,37 @@ function Filelist(params) {
   const list = [];
   let icon;
 
+  if (reforder !== "/") {
+    list.push(
+      <tr
+        onClick={(e) => {
+          reforder = reforder.replace(/\/([^/]+)\/$/, "/");
+          params.btEV(e, reforder);
+        }}
+      >
+        <td>
+          <img
+            src={`${process.env.PUBLIC_URL}/enter.png`}
+            alt={"enter.png"}
+            width={"32px"}
+          ></img>
+        </td>
+        <td>
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+            style={{color: "black"}}
+          >
+            이전으로
+          </a>
+        </td>
+        <td></td>
+      </tr>
+    );
+  }
+
   params.value.forEach((e) => {
     if (Utils.isvideo(e)) {
       icon = "video.png";
@@ -46,47 +77,55 @@ function Filelist(params) {
           ></img>
         </td>
         <td
-          onClick={() => {
-            if (regex.test(e)) window.location.href = "download/" + e;
+          onClick={(ex) => {
+            if (regex.test(e)) {
+              window.location.href = "download" + reforder + e;
+            } else {
+              reforder += e + "/";
+              params.btEV(ex, reforder);
+            }
           }}
+          style={{fontSize: "18px"}}
         >
           {regex.test(e) ? (
-            <a href={"download/" + e}>{e}</a>
+            <a href={"download" + reforder + e}>{e}</a>
           ) : (
             <a
-              href={"/"}
+              href={reforder + e}
               onClick={(ex) => {
-                reforder += e + "/";
                 ex.preventDefault();
-                params.btEV(ex, reforder);
               }}
             >
               {e}
             </a>
           )}
         </td>
-        <td>
-          <Button
-            variant="outline-warning"
-            onClick={async () => {
-              try {
-                let url = window.document.location.href;
-                if (navigator.clipboard) {
-                  //http 프로토콜로 인한 복사 오류
-                  await navigator.clipboard.writeText(url + "download/" + e);
-                  alert("주소를 복사했습니다!");
-                } else {
-                  alert(url + "download/" + e);
+        {regex.test(e) ? (
+          <td>
+            <Button
+              variant="outline-warning"
+              onClick={async () => {
+                try {
+                  let url = window.document.location.href;
+                  if (navigator.clipboard) {
+                    //http 프로토콜로 인한 복사 오류
+                    await navigator.clipboard.writeText(url + "download/" + e);
+                    alert("주소를 복사했습니다!");
+                  } else {
+                    alert(url + "download/" + e);
+                  }
+                  copyState(e);
+                } catch (error) {
+                  console.log(error);
                 }
-                copyState(e);
-              } catch (error) {
-                console.log(error);
-              }
-            }}
-          >
-            {e === value ? "복사됨!" : "공유하기"}
-          </Button>
-        </td>
+              }}
+            >
+              {e === value ? "복사됨!" : "공유하기"}
+            </Button>
+          </td>
+        ) : (
+          <td></td>
+        )}
       </tr>
     );
   });
@@ -109,7 +148,7 @@ function Filelist(params) {
           </colgroup>
           <thead>
             <tr>
-              <th></th>
+              <th>파일 유형</th>
               <th>이름</th>
               <th>공유하기</th>
             </tr>

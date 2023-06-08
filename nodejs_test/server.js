@@ -30,9 +30,9 @@ server.get("/getfile/*", (req, res) => {
   });
 });
 
-server.get("/download/:name", (req, res) => {
+server.get("/download/*", (req, res) => {
   console.log(`${req.ip}가 다운로드함`);
-  res.download(__dirname+"\\"+req.params.name);
+  res.download(__dirname+"\\"+req.params[0]);
 });
 
 server.listen(80, (err) => {
