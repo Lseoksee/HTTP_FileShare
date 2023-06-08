@@ -31,6 +31,7 @@ function Filelist(params) {
       <tr
         onClick={(e) => {
           reforder = reforder.replace(/\/([^/]+)\/$/, "/");
+          console.log(reforder);
           params.btEV(e, reforder);
           copyState();
         }}

@@ -1,3 +1,4 @@
+/* 파일인데 폴더인척하는거 잡아야함 */
 const express = require("express");
 const server = express();
 const fs = require("fs");
@@ -16,7 +17,7 @@ server.get("/getfile", (req, res) => {
   fs.readdir(dir, (err, files) => {
     if (err) {
       console.error(err);
-      res.status(500).send("요청오류");
+      res.status(500).send("500");
     } else {
       files.sort((a, b) => {
         if (regex.test(a)) {
@@ -36,7 +37,7 @@ server.get("/getfile/*", (req, res) => {
   fs.readdir(dir, (err, files) => {
     if (err) {
       console.error(err);
-      res.status(500).send("요청오류");
+      res.status(500).send("500");
     } else {
       files.sort((a) => {
         if (regex.test(a)) {
@@ -54,7 +55,6 @@ server.get("/download/*", (req, res) => {
   const dir = __dirname + setting.dir + "/" + req.params[0];
 
   console.log(`${req.ip}가 다운로드함`);
-  console.log(dir);
   res.download(dir);
 });
 
