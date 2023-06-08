@@ -19,8 +19,8 @@ server.get("/getfile", (req, res) => {
   });
 });
 
-server.get("/getfile/:name", (req, res) => {
-  fs.readdir(__dirname+"/"+req.params["*"], (err, files) => {
+server.get("/getfile/*", (req, res) => {
+  fs.readdir(__dirname+"/"+req.params[0], (err, files) => {
     if (err) {
       console.error(err);
       res.status(500).send("요청오류");

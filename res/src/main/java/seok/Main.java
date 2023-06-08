@@ -25,8 +25,12 @@ public class Main {
             e.printStackTrace();
         }
 
-        if (sc.nextLine().equals("stop")) {
-            process.destroy();
+        while (true) {
+            String input = sc.nextLine();
+            if (input.equals("stop")) {
+                process.destroy();
+                break;
+            }
         }
         sc.close();
     }

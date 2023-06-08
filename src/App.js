@@ -4,7 +4,7 @@ import { Button, Table } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Utils from "../src/Utils";
 
-let reforder= "/";
+let reforder = "/";
 
 function Mainpage(params) {
   return (
@@ -30,6 +30,8 @@ function Filelist(params) {
       icon = "music.png";
     } else if (Utils.isphoto(e)) {
       icon = "img.png";
+    } else if (!regex.test(e)) {
+      icon = "logo512.png";
     } else {
       icon = "doc.png";
     }
@@ -48,11 +50,20 @@ function Filelist(params) {
             if (regex.test(e)) window.location.href = "download/" + e;
           }}
         >
-          {regex.test(e) ? <a href={"download/" + e}>{e}</a> : <a href={"/"} onClick={ex=> {
-            reforder+=(e+"/");
-            ex.preventDefault();
-            params.btEV(ex, reforder);
-          }}> {e}</a>}
+          {regex.test(e) ? (
+            <a href={"download/" + e}>{e}</a>
+          ) : (
+            <a
+              href={"/"}
+              onClick={(ex) => {
+                reforder += e + "/";
+                ex.preventDefault();
+                params.btEV(ex, reforder);
+              }}
+            >
+              {e}
+            </a>
+          )}
         </td>
         <td>
           <Button
@@ -106,7 +117,14 @@ function Filelist(params) {
           <tbody>{list}</tbody>
         </Table>
       </div>
-      <Button onClick={params.btEV}>갱신하기</Button>
+      <Button
+        onClick={(e) => {
+          reforder = "/";
+          params.btEV(e);
+        }}
+      >
+        갱신하기
+      </Button>
     </div>
   );
 }
@@ -119,7 +137,7 @@ function App() {
     let response1;
 
     if (link) {
-      response1 = await fetch("/getfile"+link);
+      response1 = await fetch("/getfile" + link);
     } else {
       response1 = await fetch("/getfile");
     }
