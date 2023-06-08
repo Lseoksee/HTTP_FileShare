@@ -30,7 +30,6 @@ function Filelist(params) {
       <tr
         onClick={(e) => {
           reforder = reforder.replace(/\/([^/]+)\/$/, "/");
-          console.log(reforder);
           params.btEV(e, reforder);
           copyState();
         }}
@@ -126,7 +125,8 @@ function Filelist(params) {
                 }
               }}
             >
-              {url + "download" + reforder + e.name === value && navigator.clipboard
+              {url + "download" + reforder + e.name === value &&
+              navigator.clipboard
                 ? "복사됨!"
                 : "공유하기"}
             </Button>
@@ -150,22 +150,21 @@ function Filelist(params) {
 
   return (
     <div id="filelist">
-      <div id="tablediv"
-        style={{maxHeight: value? "85%": "100%"}}>
+      <div id="tablediv" style={{ maxHeight: value ? "85%" : "100%" }}>
         <Table
           id="filetable"
           striped
           bordered
           hover
           size="sm"
-          style={{ margin: "0"}}
+          style={{ margin: "0" }}
         >
           <colgroup>
             <col width="10%" />
             <col width="70%" />
             <col width="20%" />
           </colgroup>
-          <thead style={{whiteSpace: "nowrap"}}>
+          <thead style={{ whiteSpace: "nowrap" }}>
             <tr>
               <th>파일 유형</th>
               <th>이름</th>

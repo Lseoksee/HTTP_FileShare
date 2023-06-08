@@ -11,48 +11,34 @@ server.get("/", (req, res) => {
 
 server.get("/getfile", (req, res) => {
   const dir = __dirname + setting.dir;
+  const file = [];
+  const forder = [];
 
-  const files = fs
-    .readdirSync(dir, { withFileTypes: true })
-    .map((file) => {
-      if (file.isDirectory()) {
-        return { name: file.name, isdir: true };
-      } else {
-        return { name: file.name, isdir: false };
-      }
-    })
-    .sort((a, b) => {
-      if (a.isdir === true) {
-        return -1;
-      } else {
-        return 1;
-      }
-    });
+  fs.readdirSync(dir, { withFileTypes: true }).forEach((e) => {
+    if (e.isDirectory()) {
+      forder.push({ name: e.name, isdir: true });
+    } else {
+      file.push({ name: e.name, isdir: false });
+    }
+  });
 
-  res.send(files);
+  res.send([...forder, ...file]);
 });
 
 server.get("/getfile/*", (req, res) => {
   const dir = __dirname + setting.dir + "/" + req.params[0];
+  const file = [];
+  const forder = [];
 
-  const files = fs
-    .readdirSync(dir, { withFileTypes: true })
-    .map((file) => {
-      if (file.isDirectory()) {
-        return { name: file.name, isdir: true };
-      } else {
-        return { name: file.name, isdir: false };
-      }
-    })
-    .sort((a) => {
-      if (a.isdir === true) {
-        return -1;
-      } else {
-        return 1;
-      }
-    });
+  fs.readdirSync(dir, { withFileTypes: true }).forEach((e) => {
+    if (e.isDirectory()) {
+      forder.push({ name: e.name, isdir: true });
+    } else {
+      file.push({ name: e.name, isdir: false });
+    }
+  });
 
-  res.send(files);
+  res.send([...forder, ...file]);
 });
 
 server.get("/download/*", (req, res) => {
