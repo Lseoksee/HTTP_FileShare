@@ -19,7 +19,15 @@
 }
 
 #tablediv {
-    max-height: 100%;
     margin-bottom: 1em;
     overflow: overlay;
 }
+
+#refdiv {
+    margin-bottom: 2em;
+}
+
+#copyal {
+    overflow: overlay;
+}
+

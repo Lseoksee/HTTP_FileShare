@@ -1,6 +1,7 @@
 const express = require("express");
 const server = express();
 const fs = require("fs");
+const regex = /\.[^.\\/]*$/;  //폴더 구분 정규식
 
 server.use(express.static(__dirname + "/../build"));
 
@@ -14,6 +15,13 @@ server.get("/getfile", (req, res) => {
       console.error(err);
       res.status(500).send("요청오류");
     } else {
+      files.sort((a,b) => {
+        if (regex.test(a)) {
+          return 1;
+        } else {
+          return -1;
+        }
+      })
       res.send(files);
     }
   });
@@ -25,6 +33,13 @@ server.get("/getfile/*", (req, res) => {
       console.error(err);
       res.status(500).send("요청오류");
     } else {
+      files.sort((a) => {
+        if (regex.test(a)) {
+          return 1;
+        } else {
+          return -1;
+        }
+      })
       res.send(files);
     }
   });

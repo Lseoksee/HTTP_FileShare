@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "./App.css";
-import { Button, Table } from "react-bootstrap";
+import { Button, Table, Alert } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Utils from "../src/Utils";
 
-let reforder = "/";
+let reforder = "/"; //폴더 경로 저장
 
 function Mainpage(params) {
   return (
@@ -21,14 +21,18 @@ function Filelist(params) {
   const [value, copyState] = useState();
   const regex = /\.[^.\\/]*$/;
   const list = [];
+  let copywindow;
+  let url = window.document.location.href;
   let icon;
 
   if (reforder !== "/") {
+    //이전 버튼
     list.push(
       <tr
         onClick={(e) => {
           reforder = reforder.replace(/\/([^/]+)\/$/, "/");
           params.btEV(e, reforder);
+          copyState();
         }}
       >
         <td>
@@ -44,7 +48,7 @@ function Filelist(params) {
             onClick={(e) => {
               e.preventDefault();
             }}
-            style={{color: "black"}}
+            style={{ color: "black" }}
           >
             이전으로
           </a>
@@ -80,12 +84,15 @@ function Filelist(params) {
           onClick={(ex) => {
             if (regex.test(e)) {
               window.location.href = "download" + reforder + e;
+              //파일일때 표시
             } else {
               reforder += e + "/";
               params.btEV(ex, reforder);
+              copyState();
+              //폴더일때 표시
             }
           }}
-          style={{fontSize: "18px"}}
+          style={{ fontSize: "18px" }}
         >
           {regex.test(e) ? (
             <a href={"download" + reforder + e}>{e}</a>
@@ -101,26 +108,27 @@ function Filelist(params) {
           )}
         </td>
         {regex.test(e) ? (
+          //복사버튼
           <td>
             <Button
               variant="outline-warning"
               onClick={async () => {
                 try {
-                  let url = window.document.location.href;
                   if (navigator.clipboard) {
                     //http 프로토콜로 인한 복사 오류
-                    await navigator.clipboard.writeText(url + "download/" + e);
-                    alert("주소를 복사했습니다!");
-                  } else {
-                    alert(url + "download/" + e);
+                    await navigator.clipboard.writeText(
+                      url + "download" + reforder + e
+                    );
                   }
-                  copyState(e);
+                  copyState(url + "download" + reforder + e);
                 } catch (error) {
                   console.log(error);
                 }
               }}
             >
-              {e === value ? "복사됨!" : "공유하기"}
+              {url + "download" + reforder + e === value && navigator.clipboard
+                ? "복사됨!"
+                : "공유하기"}
             </Button>
           </td>
         ) : (
@@ -128,25 +136,36 @@ function Filelist(params) {
         )}
       </tr>
     );
+
+    if (value) {
+      copywindow = (
+        <div>
+          <Alert key="info" variant="primary" id="copyal">
+            {value}
+          </Alert>
+        </div>
+      );
+    }
   });
 
   return (
     <div id="filelist">
-      <div id="tablediv">
+      <div id="tablediv"
+        style={{maxHeight: value? "85%": "100%"}}>
         <Table
           id="filetable"
           striped
           bordered
           hover
           size="sm"
-          style={{ margin: "0", whiteSpace: "nowrap" }}
+          style={{ margin: "0"}}
         >
           <colgroup>
             <col width="10%" />
             <col width="70%" />
             <col width="20%" />
           </colgroup>
-          <thead>
+          <thead style={{whiteSpace: "nowrap"}}>
             <tr>
               <th>파일 유형</th>
               <th>이름</th>
@@ -156,14 +175,19 @@ function Filelist(params) {
           <tbody>{list}</tbody>
         </Table>
       </div>
-      <Button
-        onClick={(e) => {
-          reforder = "/";
-          params.btEV(e);
-        }}
-      >
-        갱신하기
-      </Button>
+      <div id="refdiv">
+        <Button
+          onClick={(e) => {
+            reforder = "/";
+            params.btEV(e);
+            copyState();
+            //갱신 버튼
+          }}
+        >
+          갱신하기
+        </Button>
+      </div>
+      {copywindow}
     </div>
   );
 }
