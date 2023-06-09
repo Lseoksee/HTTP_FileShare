@@ -48,6 +48,11 @@ server.get("/download/*", (req, res) => {
   res.download(dir);
 });
 
+server.get("/video/*", (req, res) => {
+  const dir = __dirname + setting.dir + "/" + req.params[0];
+  res.send(dir);
+});
+
 server.listen(setting.port, (err) => {
   if (err) return console.log(err);
   console.log(`서버가 ${setting.port}번 포트로 열림`);
