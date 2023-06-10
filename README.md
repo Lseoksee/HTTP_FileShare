@@ -8,8 +8,8 @@
 1. Node.js 를 설치합니다.
 2. (권장) 자바 8버전 이상을 설치합니다.
 3. [HTTP 파일공유 서비스의 최신 릴리스를 다운받습니다.](https://github.com/Lseoksee/HTTP_FileShare/releases)
-4. 공유할 파일과 폴더들을 `share`폴더에 복사 합니다. 
-5. 압축을 풀어 `start.exe` 를 실행합니다.
+4. 압축을 풀고 공유할 파일과 폴더들을 `share`폴더에 복사 합니다. 
+5. `start.exe` 를 실행합니다.
 <details>
     <summary>만약 자바가 없다면</summary>
   
