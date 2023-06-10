@@ -1,70 +1,49 @@
-# Getting Started with Create React App
+# HTTP 파일공유 서비스
+* 친구들과 빠르게 파일을 공유해 보세요!
+## 주요 기능
+* Node.js 서버를 사용한 파일 뷰어
+* 음악 & 비디오 스트리밍
+* 서버 제어 콘솔
+## 사용법
+1. Node.js 를 설치합니다.
+2. (권장) 자바 8버전 이상을 설치합니다.
+3. [HTTP 파일공유 서비스의 최신 릴리스를 다운받습니다.](https://github.com/Lseoksee/HTTP_FileShare/releases)
+4. 공유할 파일과 폴더들을 `share`폴더에 복사 합니다. 
+5. 압축을 풀어 `start.exe` 를 실행합니다.
+<details>
+    <summary>만약 자바가 없다면</summary>
+  
+    1. server.js 가 있는 폴더에서 cmd를 실행합니다. (cd명령을 사용해도 무관)
+    2. node server.js 를 입력하여 서버를 실행합니다.
+</details>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## server.json 설정
+`port`: 서버의 포트를 지정합니다. (기본값: `80`)
 
-## Available Scripts
+`dir`: serever.js가 있는 폴더 기준으로 공유할 폴더를 지정합니다. (기본값: `share`)
+* server.js가 있는 폴더 전체로 잡고 싶다면: `""`
+* 공유할 폴더가 src 라면: `/src`
+* 공유할 폴더가 src/share 라면: `/src/share`
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+`domain`: 서버와 연결된 도메인을 지정합니다. (server.exe 에서 `web` 입력시 지정된 도메인으로 이동합니다. 기본값: `""`)
+## 콘솔 명령어
+* `help`: 명령어 목록을 봅니다.
+* `stop`|`exit`: 서버를 종료시킵니다.
+* `info`: 서버의 정보를 불러옵니다.
+* `web`: 실행된 서버로 브라우저를 엽니다.
+## 주의사항
+* 서버종료시 반드시 `stop`또는 `exit`를 입력하여 종료해야합니다.
+* 설정된 포트로 포트포워딩이 필요합니다.
+## 개발환경
+### 프론트엔드
+* `React`
+* `JavaScript`
+* `HTML`, `CSS`
+### 백엔드
+* `Node.js`
+* `Express.js`
+* `Java`
+## 소스출처
+* <a href="https://www.flaticon.com/kr/free-icons/" title="폴더 아이콘">폴더 아이콘  제작자: Freepik - Flaticon</a>
+* <a href="https://www.flaticon.com/kr/free-icons/" title="비닐 아이콘">비닐 아이콘  제작자: Good Ware - Flaticon</a>
+* <a href="https://www.flaticon.com/kr/free-icons/-" title="이미지 편집 아이콘">이미지 편집 아이콘  제작자: Hilmy Abiyyu A. - Flaticon</a>
