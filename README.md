@@ -47,3 +47,5 @@
 * <a href="https://www.flaticon.com/kr/free-icons/" title="폴더 아이콘">폴더 아이콘  제작자: Freepik - Flaticon</a>
 * <a href="https://www.flaticon.com/kr/free-icons/" title="비닐 아이콘">비닐 아이콘  제작자: Good Ware - Flaticon</a>
 * <a href="https://www.flaticon.com/kr/free-icons/-" title="이미지 편집 아이콘">이미지 편집 아이콘  제작자: Hilmy Abiyyu A. - Flaticon</a>
+* <a href="https://www.flaticon.com/kr/free-icons/" title="종이 아이콘">종이 아이콘  제작자: SyafriStudio - Flaticon</a>
+* <a href="https://www.flaticon.com/kr/free-icons/-" title="비디오 제작 아이콘">비디오 제작 아이콘  제작자: Prosymbols Premium - Flaticon</a>
