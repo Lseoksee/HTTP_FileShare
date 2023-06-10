@@ -23,17 +23,20 @@ function Mainpage(params) {
 }
 
 function Filelist(params) {
-  const [value, fileState] = useState({ copy: null, file: null });
-  const type = {
-    icon: null,
-    bt: null,
-    isview: false,
-    maxHeight: 100,
-    viewicon: null,
+  const [value, fileState] = useState({
+    sharemode: null, //공유상태 (공유url)
+    viewmode: null, //미리보기 상태 (파일이름)
+    maxHeight: 100, //테이블 최대 크기
+  });
+  const viewtype = {
+    icon: null, //확장자 아이콘
+    isview: false, //미리보기 가능여부
+    viewicon: null, //미리보기 선택 아이콘
+    viewbt: null, //미리보기 버튼
+    sharebt: null, //공유버튼
   };
   const list = [];
   const url = window.document.location.href;
-  let copyal;
 
   if (reforder !== "/") {
     //이전 버튼
@@ -68,50 +71,46 @@ function Filelist(params) {
     );
   }
 
-  if (value.copy) {
-    type.maxHeight = 80;
-    copyal = (
+  if (value.sharemode) {
+    viewtype.sharebt = (
       <div>
         <Alert key="info" variant="primary" id="copyal">
-          {value.copy}
+          {value.sharemode}
         </Alert>
       </div>
     );
   }
 
   params.value.forEach(async (e) => {
-    type.isview = false;
+    viewtype.isview = false;
     if (Utils.isvideo(e.name)) {
-      type.icon = "video.png";
-      type.isview = true;
-      if (e.name === value.file) {
-        type.maxHeight = 80;
-        type.viewicon = type.icon;
-        type.bt = (
+      viewtype.icon = "video.png";
+      viewtype.isview = true;
+      if (e.name === value.viewmode) {
+        viewtype.viewicon = viewtype.icon;
+        viewtype.viewbt = (
           <video controls width={"100%"} id="video" autoPlay>
             <source src={"view" + reforder + e.name}></source>
           </video>
         );
       }
     } else if (Utils.isaudio(e.name)) {
-      type.icon = "music.png";
-      type.isview = true;
-      if (e.name === value.file) {
-        type.maxHeight = 80;
-        type.viewicon = type.icon;
-        type.bt = (
+      viewtype.icon = "music.png";
+      viewtype.isview = true;
+      if (e.name === value.viewmode) {
+        viewtype.viewicon = viewtype.icon;
+        viewtype.viewbt = (
           <audio controls id="audio" autoPlay>
             <source src={"view" + reforder + e.name}></source>
           </audio>
         );
       }
     } else if (Utils.isphoto(e.name)) {
-      type.icon = "img.png";
-      type.isview = true;
-      if (e.name === value.file) {
-        type.maxHeight = 80;
-        type.viewicon = type.icon;
-        type.bt = (
+      viewtype.icon = "img.png";
+      viewtype.isview = true;
+      if (e.name === value.viewmode) {
+        viewtype.viewicon = viewtype.icon;
+        viewtype.viewbt = (
           <img
             src={"view" + reforder + e.name}
             alt={e.name}
@@ -121,19 +120,19 @@ function Filelist(params) {
         );
       }
     } else if (Utils.iszip(e.name)) {
-      type.icon = "zip.png";
+      viewtype.icon = "zip.png";
     } else if (e.isdir) {
-      type.icon = "logo512.png";
+      viewtype.icon = "logo512.png";
     } else {
-      type.icon = "doc.png";
+      viewtype.icon = "doc.png";
     }
 
     list.push(
       <tr>
         <td>
           <img
-            src={`${process.env.PUBLIC_URL}/${type.icon}`}
-            alt={type.icon}
+            src={`${process.env.PUBLIC_URL}/${viewtype.icon}`}
+            alt={viewtype.icon}
             width={"32px"}
           ></img>
         </td>
@@ -171,43 +170,51 @@ function Filelist(params) {
               variant="outline-warning"
               onClick={async () => {
                 const location = url + "download" + reforder + e.name;
+                const cp = { ...value };
 
                 try {
                   if (navigator.clipboard) {
                     //http 프로토콜로 인한 복사 오류
                     await navigator.clipboard.writeText(location);
                   }
-                  if (location !== value.copy) {
-                    fileState({
-                      copy: url + "download" + reforder + e.name,
-                      file: value.file,
-                    });
+
+                  if (location !== cp.sharemode) {
+                    //복사
+                    cp.sharemode = url + "download" + reforder + e.name;
+                    cp.maxHeight = 80;
+                    fileState(cp);
                   } else {
-                    fileState({
-                      copy: null,
-                      file: value.file,
-                    });
+                    //취소
+                    cp.sharemode = null;
+                    if (!cp.viewmode) {
+                      cp.maxHeight = 100;
+                    }
+
+                    fileState(cp);
                   }
                 } catch (error) {
                   console.log(error);
                 }
               }}
             >
-              {url + "download" + reforder + e.name === value.copy &&
+              {url + "download" + reforder + e.name === value.sharemode &&
               navigator.clipboard
                 ? "복사됨!"
                 : "공유하기"}
             </Button>
-            {type.isview ? (
+            {viewtype.isview ? (
+              // 미리보기 버튼
               <Button
                 variant="outline-primary"
                 onClick={(ex) => {
+                  const cp = { ...value };
+
                   ex.preventDefault();
-                  if (value.file !== e.name) {
-                    fileState({
-                      copy: value.copy,
-                      file: e.name,
-                    });
+                  if (cp.viewmode !== e.name) {
+                    //미리보기
+                    cp.viewmode = e.name;
+                    cp.maxHeight = 80;
+                    fileState(cp);
 
                     const video = document.getElementById("video");
                     const audio = document.getElementById("audio");
@@ -218,14 +225,16 @@ function Filelist(params) {
                       video.load();
                     }
                   } else {
-                    fileState({
-                      copy: value.copy,
-                      file: null,
-                    });
+                    //취소
+                    cp.viewmode = null;
+                    if (!cp.sharemode) {
+                      cp.maxHeight = 100;
+                    }
+                    fileState(cp);
                   }
                 }}
               >
-                {value.file === e.name ? "보는중" : "미리보기"}
+                {value.viewmode === e.name ? "보는중" : "미리보기"}
               </Button>
             ) : null}
           </td>
@@ -238,7 +247,7 @@ function Filelist(params) {
 
   return (
     <div id="filelist">
-      <div id="tablediv" style={{ maxHeight: `${type.maxHeight}%` }}>
+      <div id="tablediv" style={{ maxHeight: `${value.maxHeight}%` }}>
         <Table
           id="filetable"
           striped
@@ -249,8 +258,8 @@ function Filelist(params) {
         >
           <colgroup>
             <col width="10%" />
-            <col width="70%" />
-            <col width="20%" />
+            <col width="60%" />
+            <col width="30%" />
           </colgroup>
           <thead style={{ whiteSpace: "nowrap" }}>
             <tr>
@@ -274,18 +283,18 @@ function Filelist(params) {
           갱신하기
         </Button>
       </div>
-      {copyal}
-      {type.bt ? (
+      {viewtype.sharebt}
+      {viewtype.viewbt ? (
         <div id="view">
-          {type.bt}
+          {viewtype.viewbt}
           <Badge bg="info" pill id="viewbg">
             <img
-              src={`${process.env.PUBLIC_URL}/${type.viewicon}`}
-              alt={type.viewicon}
+              src={`${process.env.PUBLIC_URL}/${viewtype.viewicon}`}
+              alt={viewtype.viewicon}
               width={"24px"}
               style={{ marginRight: "0.2em" }}
             ></img>
-            {value.file}
+            {value.viewmode}
           </Badge>
         </div>
       ) : null}
