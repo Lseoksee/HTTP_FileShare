@@ -24,14 +24,14 @@ function Mainpage(params) {
 
 function Filelist(params) {
   const [value, fileState] = useState({
-    sharemode: null, //공유상태 (공유url)
-    viewmode: null, //미리보기 상태 (파일이름)
+    sharemode: "", //공유상태 (공유url)
+    viewmode: "", //미리보기 상태 (파일이름)
     maxHeight: 100, //테이블 최대 크기
   });
   const viewtype = {
-    icon: null, //확장자 아이콘
-    isview: false, //미리보기 가능여부
-    viewicon: null, //미리보기 선택 아이콘
+    icon: "", //확장자 아이콘
+    isview: "", //미리보기 가능여부
+    viewicon: "", //미리보기 선택 아이콘
     viewbt: null, //미리보기 버튼
     sharebt: null, //공유버튼
   };
@@ -68,16 +68,6 @@ function Filelist(params) {
         </td>
         <td></td>
       </tr>
-    );
-  }
-
-  if (value.sharemode) {
-    viewtype.sharebt = (
-      <div>
-        <Alert key="info" variant="primary" id="copyal">
-          {value.sharemode}
-        </Alert>
-      </div>
     );
   }
 
@@ -245,6 +235,33 @@ function Filelist(params) {
     );
   });
 
+  if (value.sharemode) {
+    viewtype.sharebt = (
+      <div>
+        <Alert key="info" variant="primary" id="copyal">
+          {value.sharemode}
+        </Alert>
+      </div>
+    );
+  }
+
+  if (value.viewmode) {
+    viewtype.viewbt = (
+      <div id="view">
+        {viewtype.viewbt}
+        <Badge bg="info" pill id="viewbg">
+          <img
+            src={`${process.env.PUBLIC_URL}/${viewtype.viewicon}`}
+            alt={viewtype.viewicon}
+            width={"24px"}
+            style={{ marginRight: "0.2em" }}
+          ></img>
+          {value.viewmode}
+        </Badge>
+      </div>
+    );
+  }
+
   return (
     <div id="filelist">
       <div id="tablediv" style={{ maxHeight: `${value.maxHeight}%` }}>
@@ -284,20 +301,7 @@ function Filelist(params) {
         </Button>
       </div>
       {viewtype.sharebt}
-      {viewtype.viewbt ? (
-        <div id="view">
-          {viewtype.viewbt}
-          <Badge bg="info" pill id="viewbg">
-            <img
-              src={`${process.env.PUBLIC_URL}/${viewtype.viewicon}`}
-              alt={viewtype.viewicon}
-              width={"24px"}
-              style={{ marginRight: "0.2em" }}
-            ></img>
-            {value.viewmode}
-          </Badge>
-        </div>
-      ) : null}
+      {viewtype.viewbt}
     </div>
   );
 }
