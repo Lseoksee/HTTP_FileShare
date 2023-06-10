@@ -42,15 +42,15 @@ server.get("/getfile/*", (req, res) => {
 });
 
 server.get("/download/*", (req, res) => {
-  const dir = __dirname + setting.dir + "/" + req.params[0];
-
-  console.log(`${req.ip}가 다운로드함`);
-  res.download(dir);
+  const dir = setting.dir + "/" + req.params[0];
+  res.download(__dirname+dir);
+  console.log(`${req.ip}가 ${dir} 파일을 다운로드함`);
 });
 
-server.get("/video/*", (req, res) => {
-  const dir = __dirname + setting.dir + "/" + req.params[0];
-  res.send(dir);
+server.get("/view/*", (req, res) => {
+  const dir = setting.dir + "/" + req.params[0];
+  res.sendFile(__dirname+dir);
+  console.log(`${req.ip}가 ${dir} 파일을 스트리밍 중`);
 });
 
 server.listen(setting.port, (err) => {
