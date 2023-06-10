@@ -24,7 +24,13 @@ function Mainpage(params) {
 
 function Filelist(params) {
   const [value, fileState] = useState({ copy: null, file: null });
-  const type = { icon: null, bt: null, maxHeight: 100, viewicon: null };
+  const type = {
+    icon: null,
+    bt: null,
+    isview: false,
+    maxHeight: 100,
+    viewicon: null,
+  };
   const list = [];
   const url = window.document.location.href;
   let copyal;
@@ -74,8 +80,10 @@ function Filelist(params) {
   }
 
   params.value.forEach(async (e) => {
+    type.isview = false;
     if (Utils.isvideo(e.name)) {
       type.icon = "video.png";
+      type.isview = true;
       if (e.name === value.file) {
         type.maxHeight = 80;
         type.viewicon = type.icon;
@@ -87,6 +95,7 @@ function Filelist(params) {
       }
     } else if (Utils.isaudio(e.name)) {
       type.icon = "music.png";
+      type.isview = true;
       if (e.name === value.file) {
         type.maxHeight = 80;
         type.viewicon = type.icon;
@@ -98,6 +107,7 @@ function Filelist(params) {
       }
     } else if (Utils.isphoto(e.name)) {
       type.icon = "img.png";
+      type.isview = true;
       if (e.name === value.file) {
         type.maxHeight = 80;
         type.viewicon = type.icon;
@@ -110,6 +120,8 @@ function Filelist(params) {
           ></img>
         );
       }
+    } else if (Utils.iszip(e.name)) {
+      type.icon = "zip.png";
     } else if (e.isdir) {
       type.icon = "logo512.png";
     } else {
@@ -186,7 +198,7 @@ function Filelist(params) {
                 ? "복사됨!"
                 : "공유하기"}
             </Button>
-            {type.icon !== "doc.png" ? (
+            {type.isview ? (
               <Button
                 variant="outline-primary"
                 onClick={(ex) => {

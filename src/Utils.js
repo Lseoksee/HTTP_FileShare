@@ -55,6 +55,28 @@ class Utill {
 
     return photoExtensions.includes(extension.toLowerCase());
   }
+  
+  static iszip(file) {
+    const zipExtensions = [
+      ".zip",
+      ".rar",
+      ".7z",
+      ".tar",
+      ".gz",
+      ".bz",
+      ".bz2",
+      ".xz",
+      ".lzh",
+      ".cab",
+      ".iso",
+      ".img",
+      ".dmg",
+      ".egg",
+    ];
+    const extension = file.substring(file.lastIndexOf("."));
+
+    return zipExtensions.includes(extension.toLowerCase());
+  }
 }
 
 export default Utill;

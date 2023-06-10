@@ -1,5 +1,5 @@
 {
   "port": 80,
-  "dir": "",
+  "dir": "/share",
   "domain": ""
 }
