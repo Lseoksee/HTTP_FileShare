@@ -38,7 +38,7 @@ class Utill {
 
   static isphoto(file) {
     const photoExtensions = [
-      "jpeg",
+      ".jpeg",
       ".jpg",
       ".png",
       ".gif",
