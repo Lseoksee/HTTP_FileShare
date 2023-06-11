@@ -5,8 +5,11 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+export const webcon = React.createContext();
 let viewsize;
-if (  //모바일 여부 확인
+
+if (
+  //모바일 여부 확인
   /Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent
   )
@@ -18,7 +21,9 @@ if (  //모바일 여부 확인
 
 root.render(
   <React.StrictMode>
-    <App viewsize={viewsize}/>
+    <webcon.Provider value={{ viewsize: viewsize }}>
+      <App />
+    </webcon.Provider>
   </React.StrictMode>
 );
 

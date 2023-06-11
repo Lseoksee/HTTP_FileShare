@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./App.css";
 import { Button, Table, Alert, Badge } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { webcon } from "./index";
 import Utils from "../src/Utils";
 
 let reforder = "/"; //폴더 경로 저장
@@ -37,6 +38,7 @@ function Filelist(params) {
   };
   const list = [];
   const url = window.document.location.href;
+  const context = useContext(webcon);
 
   if (reforder !== "/") {
     //이전 버튼
@@ -263,7 +265,7 @@ function Filelist(params) {
   }
 
   return (
-    <div id="filelist" style={{ width: params.viewsize }}>
+    <div id="filelist" style={{ width: context.viewsize }}>
       <div id="tablediv" style={{ maxHeight: `${value.maxHeight}%` }}>
         <Table
           id="filetable"
@@ -325,13 +327,7 @@ function App(params) {
   };
 
   if (value) {
-    res = (
-      <Filelist
-        value={value}
-        btEV={getfile}
-        viewsize={params.viewsize}
-      ></Filelist>
-    );
+    res = <Filelist value={value} btEV={getfile}></Filelist>;
   } else {
     res = <Mainpage btEV={getfile}></Mainpage>;
   }
