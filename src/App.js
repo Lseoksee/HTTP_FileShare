@@ -19,6 +19,15 @@ function Mainpage(params) {
       <Button id="checkbt" onClick={params.btEV}>
         파일 확인하러가기
       </Button>
+      {params.err ? (
+        <Alert
+          key="danger"
+          variant="danger"
+          style={{ marginTop: "var(--bs-alert-margin-bottom)" }}
+        >
+          폴더가 존재하지 않는거 같습니다!
+        </Alert>
+      ) : null}
     </div>
   );
 }
@@ -321,15 +330,20 @@ function App(params) {
       response1 = await fetch("/getfile");
     }
 
-    const result1 = await response1.json();
-
-    setState(result1);
+    if (response1.ok) {
+      const result1 = await response1.json();
+      setState(result1);
+    } else {
+      setState("err");
+    }
   };
 
-  if (value) {
-    res = <Filelist value={value} btEV={getfile}></Filelist>;
-  } else {
+  if (value === "err") {
+    res = <Mainpage btEV={getfile} err={true}></Mainpage>;
+  } else if (!value) {
     res = <Mainpage btEV={getfile}></Mainpage>;
+  } else {
+    res = <Filelist value={value} btEV={getfile}></Filelist>;
   }
 
   return <div id="home">{res}</div>;
