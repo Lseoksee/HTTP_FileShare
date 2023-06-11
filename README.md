@@ -1,4 +1,5 @@
-# HTTP 파일공유 서비스
+
+# <img src="https://github.com/Lseoksee/HTTP_FileShare/assets/91320047/d9813c68-5f31-45f8-b742-07f095f90e94" alt="폴더아이콘" width="32px"/> HTTP 파일공유 서비스
 * 친구들과 빠르게 파일을 공유해 보세요!
 ## 주요 기능
 * Node.js 서버를 사용한 파일 뷰어
