@@ -9,6 +9,7 @@
 #maindiv {
     display: flex;
     flex-direction: column;
+    text-align: center;
     align-items: center;
 }
 
@@ -42,4 +43,6 @@
     display: flex;
     font-size: 15px;
     margin-top: 0.7em;
+    margin-bottom: 0.7em;
+    white-space: normal;
 }

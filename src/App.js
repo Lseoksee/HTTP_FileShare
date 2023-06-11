@@ -263,7 +263,7 @@ function Filelist(params) {
   }
 
   return (
-    <div id="filelist">
+    <div id="filelist" style={{ width: params.viewsize }}>
       <div id="tablediv" style={{ maxHeight: `${value.maxHeight}%` }}>
         <Table
           id="filetable"
@@ -275,8 +275,8 @@ function Filelist(params) {
         >
           <colgroup>
             <col width="10%" />
-            <col width="60%" />
-            <col width="30%" />
+            <col width="70%" />
+            <col width="20%" />
           </colgroup>
           <thead style={{ whiteSpace: "nowrap" }}>
             <tr>
@@ -306,7 +306,7 @@ function Filelist(params) {
   );
 }
 
-function App() {
+function App(params) {
   const [value, setState] = useState();
   let res;
 
@@ -325,7 +325,13 @@ function App() {
   };
 
   if (value) {
-    res = <Filelist value={value} btEV={getfile}></Filelist>;
+    res = (
+      <Filelist
+        value={value}
+        btEV={getfile}
+        viewsize={params.viewsize}
+      ></Filelist>
+    );
   } else {
     res = <Mainpage btEV={getfile}></Mainpage>;
   }
