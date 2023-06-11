@@ -77,6 +77,24 @@ class Utill {
 
     return zipExtensions.includes(extension.toLowerCase());
   }
+
+  static mapsize(size) {
+    if (size < 1024) {
+      return {size: size, type: "B"}
+
+    } else if (size > 1024 &&  size < Math.pow(1024, 2)) {
+      return {size: size/1024,  type: "KB"}
+
+    } else if (size > Math.pow(1024, 2) &&  size < Math.pow(1024, 3)) {
+      return {size: size / Math.pow(1024, 2), type: "MB"}
+
+    } else if (size > Math.pow(1024, 3) && size < Math.pow(1024, 4)) {
+      return {size: size / Math.pow(1024, 3), type: "GB"}
+
+    } else {
+      return {size: size / Math.pow(1024, 4), type: "TB"}
+    }
+  }
 }
 
 export default Utill;

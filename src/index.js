@@ -16,7 +16,7 @@ if (
 ) {
   viewsize = "90%";
 } else {
-  viewsize = "70%";
+  viewsize = "75%";
 }
 
 root.render(

@@ -44,6 +44,7 @@ function Filelist(params) {
     viewicon: "", //미리보기 선택 아이콘
     viewbt: null, //미리보기 버튼
     sharebt: null, //공유버튼
+    sizeshort: { size: 0.0, type: "" }, //파일크기
   };
   const list = [];
   const url = window.document.location.href;
@@ -77,6 +78,7 @@ function Filelist(params) {
             이전으로
           </a>
         </td>
+        <td></td>
         <td></td>
       </tr>
     );
@@ -127,9 +129,12 @@ function Filelist(params) {
     } else {
       viewtype.icon = "doc.png";
     }
+    
+    if (e.size) viewtype.sizeshort = Utils.mapsize(e.size);
 
     list.push(
       <tr>
+        {/* 파일 유형 */}
         <td>
           <img
             src={`${process.env.PUBLIC_URL}/${viewtype.icon}`}
@@ -137,6 +142,8 @@ function Filelist(params) {
             width={"32px"}
           ></img>
         </td>
+
+        {/* 이름 */}
         <td
           onClick={(ex) => {
             if (!e.isdir) {
@@ -164,6 +171,17 @@ function Filelist(params) {
             </a>
           )}
         </td>
+
+        {/* 용량 */}
+        {e.size ? (
+          <td>
+            {viewtype.sizeshort.size.toFixed(2)} {viewtype.sizeshort.type}
+          </td>
+        ) : (
+          <td></td>
+        )}
+
+        {/* 공유하기 */}
         {!e.isdir ? (
           //복사버튼
           <td>
@@ -285,14 +303,16 @@ function Filelist(params) {
           style={{ margin: "0" }}
         >
           <colgroup>
+            <col width="5%" />
+            <col width="65%" />
             <col width="10%" />
-            <col width="70%" />
             <col width="20%" />
           </colgroup>
           <thead style={{ whiteSpace: "nowrap" }}>
             <tr>
               <th>파일 유형</th>
               <th>이름</th>
+              <th>크기</th>
               <th>공유하기</th>
             </tr>
           </thead>
