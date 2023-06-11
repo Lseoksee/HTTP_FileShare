@@ -84,7 +84,7 @@ function Filelist(params) {
     );
   }
 
-  params.value.forEach(async (e) => {
+  params.value.forEach((e) => {
     viewtype.isview = false;
     if (Utils.isvideo(e.name)) {
       viewtype.icon = "video.png";
@@ -324,7 +324,8 @@ function Filelist(params) {
           onClick={(e) => {
             reforder = "/";
             params.btEV(e);
-            fileState({});
+
+            fileState({maxHeight: 100});
             //갱신 버튼
           }}
         >
@@ -337,7 +338,7 @@ function Filelist(params) {
   );
 }
 
-function App(params) {
+function App() {
   const [value, setState] = useState();
   let res;
 
