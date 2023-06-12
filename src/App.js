@@ -93,7 +93,7 @@ function Filelist(params) {
         viewtype.viewicon = viewtype.icon;
         viewtype.viewbt = (
           <video controls width={"100%"} id="video" autoPlay>
-            <source src={"view" + reforder + e.name}></source>
+            <source src={encodeURI("view" + reforder + e.name)}></source>
           </video>
         );
       }
@@ -104,7 +104,7 @@ function Filelist(params) {
         viewtype.viewicon = viewtype.icon;
         viewtype.viewbt = (
           <audio controls id="audio" autoPlay>
-            <source src={"view" + reforder + e.name}></source>
+            <source src={encodeURI("view" + reforder + e.name)}></source>
           </audio>
         );
       }
@@ -115,7 +115,7 @@ function Filelist(params) {
         viewtype.viewicon = viewtype.icon;
         viewtype.viewbt = (
           <img
-            src={"view" + reforder + e.name}
+            src={encodeURI("view" + reforder + e.name)}
             alt={e.name}
             width={"100%"}
             id="img"
@@ -129,7 +129,7 @@ function Filelist(params) {
     } else {
       viewtype.icon = "doc.png";
     }
-    
+
     if (e.size) viewtype.sizeshort = Utils.mapsize(e.size);
 
     list.push(
@@ -188,7 +188,9 @@ function Filelist(params) {
             <Button
               variant="outline-warning"
               onClick={async () => {
-                const location = url + "download" + reforder + e.name;
+                const location = encodeURI(
+                  url + "download" + reforder + e.name
+                );
                 const cp = { ...value };
 
                 try {
@@ -199,7 +201,7 @@ function Filelist(params) {
 
                   if (location !== cp.sharemode) {
                     //복사
-                    cp.sharemode = url + "download" + reforder + e.name;
+                    cp.sharemode = location;
                     cp.maxHeight = 80;
                     fileState(cp);
                   } else {
@@ -216,8 +218,8 @@ function Filelist(params) {
                 }
               }}
             >
-              {url + "download" + reforder + e.name === value.sharemode &&
-              navigator.clipboard
+              {encodeURI(url + "download" + reforder + e.name) ===
+                value.sharemode && navigator.clipboard
                 ? "복사됨!"
                 : "공유하기"}
             </Button>
@@ -325,7 +327,7 @@ function Filelist(params) {
             reforder = "/";
             params.btEV(e);
 
-            fileState({maxHeight: 100});
+            fileState({ maxHeight: 100 });
             //갱신 버튼
           }}
         >
