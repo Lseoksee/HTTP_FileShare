@@ -52,7 +52,7 @@ public class Main {
                 ipAddr();
                 continue;
             } else if (input.equals("web") && outIpAddr != null && domain != null) {
-                if (domain.equals("")) {
+                if (domain.equals(":"+port)) {
                     Desktop.getDesktop().browse(new URI("http://" + outIpAddr));
                 } else {
                     Desktop.getDesktop().browse(new URI("http://" + domain));
@@ -71,7 +71,7 @@ public class Main {
         if (outIpAddr != null) {
             System.out.println("내부 ip주소: " + inIpAddr);
             System.out.println("외부 ip주소: " + outIpAddr);
-            if (!domain.equals("")) {
+            if (!domain.equals(":"+port)) {
                 System.out.println("연결된 도메인: " + domain);
             }
             System.out.println("포트번호: " + port);
@@ -88,19 +88,20 @@ public class Main {
 
         JSONObject jsonObject = new JSONObject(jsonbuffer.lines().collect(Collectors.joining("\n")));
         port = jsonObject.getInt("port");
-        domain = jsonObject.getString("domain");
 
         if (port == 80 || port == 443) {
             outIpAddr = ipbr.readLine();
             inIpAddr = ipAddress.getHostAddress();
+            domain = jsonObject.getString("domain");
         } else {
             outIpAddr = ipbr.readLine() + ":" + port;
-            inIpAddr = ipAddress.getHostAddress();
+            inIpAddr = ipAddress.getHostAddress() + ":" + port;
+            domain = jsonObject.getString("domain") + ":" + port;
         }
 
         System.out.println("내부 ip주소: " + inIpAddr);
         System.out.println("외부 ip주소: " + outIpAddr);
-        if (domain.equals("")) {
+        if (domain.equals(":"+port)) {
             Desktop.getDesktop().browse(new URI("http://" + outIpAddr));
         } else {
             System.out.println("연결된 도메인: " + domain);
