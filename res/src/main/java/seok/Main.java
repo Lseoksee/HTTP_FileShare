@@ -52,7 +52,7 @@ public class Main {
                 ipAddr();
                 continue;
             } else if (input.equals("web") && outIpAddr != null && domain != null) {
-                if (domain.equals(":"+port)) {
+                if (domain.equals(":"+port) || domain.equals("")) {
                     Desktop.getDesktop().browse(new URI("http://" + outIpAddr));
                 } else {
                     Desktop.getDesktop().browse(new URI("http://" + domain));
@@ -71,7 +71,7 @@ public class Main {
         if (outIpAddr != null) {
             System.out.println("내부 ip주소: " + inIpAddr);
             System.out.println("외부 ip주소: " + outIpAddr);
-            if (!domain.equals(":"+port)) {
+            if (!domain.equals(":"+port) && !domain.equals("")) {
                 System.out.println("연결된 도메인: " + domain);
             }
             System.out.println("포트번호: " + port);
@@ -101,7 +101,7 @@ public class Main {
 
         System.out.println("내부 ip주소: " + inIpAddr);
         System.out.println("외부 ip주소: " + outIpAddr);
-        if (domain.equals(":"+port)) {
+        if (domain.equals(":"+port) || domain.equals("")) {
             Desktop.getDesktop().browse(new URI("http://" + outIpAddr));
         } else {
             System.out.println("연결된 도메인: " + domain);
