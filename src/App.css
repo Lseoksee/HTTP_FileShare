@@ -51,8 +51,7 @@
     width: 80%;
 }
 
-#txtoast_body{
+#txtoast_body {
     text-align: left;
     font-size: 18px;
-    white-space: pre-wrap;
 }

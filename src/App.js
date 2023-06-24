@@ -4,6 +4,8 @@ import { Button, Table, Alert, Badge, Toast } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { webcon } from "./index";
 import Utils from "../src/Utils";
+import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
+import { vs } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 let reforder = "/"; //폴더 경로 저장
 
@@ -83,6 +85,14 @@ function Filelist(params) {
 
       const response = await fetch(encodeURI("view" + reforder + name));
       const text = await response.text();
+      const lankey = new Map([
+        [".js", "javascript"],
+        [".html", "htmlbars"],
+        [".css", "css"],
+        [".json", "json"],
+      ]);
+      const lan = lankey.get(type.extension) || "plaintext";
+
       temp = (
         <Toast
           onClose={() => {
@@ -105,7 +115,11 @@ function Filelist(params) {
             />
             <strong className="me-auto">{name}</strong>
           </Toast.Header>
-          <Toast.Body id="txtoast_body">{text}</Toast.Body>
+          <Toast.Body id="txtoast_body">
+            <SyntaxHighlighter language={lan} style={vs} customStyle={{padding: "0"}} >
+              {text}
+            </SyntaxHighlighter>
+          </Toast.Body>
         </Toast>
       );
     }
