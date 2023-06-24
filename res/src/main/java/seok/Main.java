@@ -59,7 +59,7 @@ public class Main {
                 }
                 continue;
             } else if (input.equals("help")) {
-                System.out.println("stop|exit:  서버를 종료 시킵니다..");
+                System.out.println("stop|exit:  서버를 종료 시킵니다.");
                 System.out.println("info:       서버의 정보를 불러옵니다.");
                 System.out.println("web:        브라우저를 엽니다.");
             }

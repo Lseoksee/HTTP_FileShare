@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import "./App.css";
-import { Button, Table, Alert, Badge } from "react-bootstrap";
+import { Button, Table, Alert, Badge, Toast } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { webcon } from "./index";
 import Utils from "../src/Utils";
@@ -34,21 +34,99 @@ function Mainpage(params) {
 
 function Filelist(params) {
   const [value, fileState] = useState({
-    sharemode: "", //공유상태 (공유url)
-    viewmode: "", //미리보기 상태 (파일이름)
+    sharemode: null, //공유창
+    viewmode: null, //미리보기창
+    viewckname: "", //미리보기 클릭 이름
+    copyckname: "", //복사 클릭 이름
     maxHeight: 100, //테이블 최대 크기
   });
   const viewtype = {
     icon: "", //확장자 아이콘
     isview: "", //미리보기 가능여부
     viewicon: "", //미리보기 선택 아이콘
-    viewbt: null, //미리보기 버튼
-    sharebt: null, //공유버튼
     sizeshort: { size: 0.0, type: "" }, //파일크기
   };
   const list = [];
   const url = window.document.location.href;
   const context = useContext(webcon);
+
+  const whatview = async (cp, name) => {
+    const type = Utils.Filetype(name);
+    let temp;
+
+    if (type.type === "video") {
+      viewtype.viewicon = "video.png";
+      temp = (
+        <video controls width={"100%"} id="video" autoPlay>
+          <source src={encodeURI("view" + reforder + name)}></source>
+        </video>
+      );
+    } else if (type.type === "audio") {
+      viewtype.viewicon = "music.png";
+      temp = (
+        <audio controls id="audio" autoPlay>
+          <source src={encodeURI("view" + reforder + name)}></source>
+        </audio>
+      );
+    } else if (type.type === "photo") {
+      viewtype.viewicon = "img.png";
+      temp = (
+        <img
+          src={encodeURI("view" + reforder + name)}
+          alt={name}
+          width={"100%"}
+          id="img"
+        ></img>
+      );
+    } else if (type.type === "txt") {
+      viewtype.viewicon = "doc.png";
+
+      const response = await fetch(encodeURI("view" + reforder + name));
+      const text = await response.text();
+      temp = (
+        <Toast
+          onClose={() => {
+            const cp = { ...value };
+
+            cp.viewmode = null;
+            cp.viewckname = null;
+            if (!cp.sharemode) {
+              cp.maxHeight = 100;
+            }
+            fileState(cp);
+          }}
+          id="txtoast"
+        >
+          <Toast.Header>
+            <img
+              src={`${process.env.PUBLIC_URL}/${viewtype.viewicon}`}
+              alt={viewtype.viewicon}
+              width={"16px"}
+            />
+            <strong className="me-auto">{name}</strong>
+          </Toast.Header>
+          <Toast.Body id="txtoast_body">{text}</Toast.Body>
+        </Toast>
+      );
+    }
+
+    cp.viewmode = (
+      <div id="view">
+        {temp}
+        <Badge bg="info" pill id="viewbg">
+          <img
+            src={`${process.env.PUBLIC_URL}/${viewtype.viewicon}`}
+            alt={viewtype.viewicon}
+            width={"24px"}
+            style={{ marginRight: "0.2em" }}
+          ></img>
+          {name}
+        </Badge>
+      </div>
+    );
+
+    fileState(cp);
+  };
 
   if (reforder !== "/") {
     //이전 버튼
@@ -85,49 +163,27 @@ function Filelist(params) {
   }
 
   params.value.forEach((e) => {
+    const type = Utils.Filetype(e.name);
     viewtype.isview = false;
-    if (Utils.isvideo(e.name)) {
+
+    if (type.type === "video") {
       viewtype.icon = "video.png";
       viewtype.isview = true;
-      if (e.name === value.viewmode) {
-        viewtype.viewicon = viewtype.icon;
-        viewtype.viewbt = (
-          <video controls width={"100%"} id="video" autoPlay>
-            <source src={encodeURI("view" + reforder + e.name)}></source>
-          </video>
-        );
-      }
-    } else if (Utils.isaudio(e.name)) {
+    } else if (type.type === "audio") {
       viewtype.icon = "music.png";
       viewtype.isview = true;
-      if (e.name === value.viewmode) {
-        viewtype.viewicon = viewtype.icon;
-        viewtype.viewbt = (
-          <audio controls id="audio" autoPlay>
-            <source src={encodeURI("view" + reforder + e.name)}></source>
-          </audio>
-        );
-      }
-    } else if (Utils.isphoto(e.name)) {
+    } else if (type.type === "photo") {
       viewtype.icon = "img.png";
       viewtype.isview = true;
-      if (e.name === value.viewmode) {
-        viewtype.viewicon = viewtype.icon;
-        viewtype.viewbt = (
-          <img
-            src={encodeURI("view" + reforder + e.name)}
-            alt={e.name}
-            width={"100%"}
-            id="img"
-          ></img>
-        );
-      }
-    } else if (Utils.iszip(e.name)) {
+    } else if (type.type === "txt") {
+      viewtype.isview = true;
+      viewtype.icon = "doc.png";
+    } else if (type.type === "zip") {
       viewtype.icon = "zip.png";
     } else if (e.isdir) {
       viewtype.icon = "logo512.png";
     } else {
-      viewtype.icon = "doc.png";
+      viewtype.isview = true;
     }
 
     if (e.size) viewtype.sizeshort = Utils.mapsize(e.size);
@@ -187,7 +243,8 @@ function Filelist(params) {
           <td>
             <Button
               variant="outline-warning"
-              onClick={async () => {
+              id={e.name}
+              onClick={async (ex) => {
                 const location = encodeURI(
                   url + "download" + reforder + e.name
                 );
@@ -199,18 +256,25 @@ function Filelist(params) {
                     await navigator.clipboard.writeText(location);
                   }
 
-                  if (location !== cp.sharemode) {
+                  if (e.name !== cp.copyckname) {
                     //복사
-                    cp.sharemode = location;
+                    cp.sharemode = (
+                      <div>
+                        <Alert key="info" variant="primary" id="copyal">
+                          {location}
+                        </Alert>
+                      </div>
+                    );
                     cp.maxHeight = 80;
+                    cp.copyckname = ex.target.id;
                     fileState(cp);
                   } else {
                     //취소
                     cp.sharemode = null;
+                    cp.copyckname = null;
                     if (!cp.viewmode) {
                       cp.maxHeight = 100;
                     }
-
                     fileState(cp);
                   }
                 } catch (error) {
@@ -218,8 +282,7 @@ function Filelist(params) {
                 }
               }}
             >
-              {encodeURI(url + "download" + reforder + e.name) ===
-                value.sharemode && navigator.clipboard
+              {e.name === value.copyckname && navigator.clipboard
                 ? "복사됨!"
                 : "공유하기"}
             </Button>
@@ -227,15 +290,17 @@ function Filelist(params) {
               // 미리보기 버튼
               <Button
                 variant="outline-primary"
+                id={e.name}
                 onClick={(ex) => {
                   const cp = { ...value };
 
                   ex.preventDefault();
-                  if (cp.viewmode !== e.name) {
+                  if (ex.target.id !== cp.viewckname) {
                     //미리보기
                     cp.viewmode = e.name;
                     cp.maxHeight = 80;
-                    fileState(cp);
+                    cp.viewckname = ex.target.id;
+                    whatview(cp, e.name);
 
                     const video = document.getElementById("video");
                     const audio = document.getElementById("audio");
@@ -248,6 +313,7 @@ function Filelist(params) {
                   } else {
                     //취소
                     cp.viewmode = null;
+                    cp.viewckname = null;
                     if (!cp.sharemode) {
                       cp.maxHeight = 100;
                     }
@@ -255,7 +321,7 @@ function Filelist(params) {
                   }
                 }}
               >
-                {value.viewmode === e.name ? "보는중" : "미리보기"}
+                {value.viewckname === e.name ? "보는중" : "미리보기"}
               </Button>
             ) : null}
           </td>
@@ -265,33 +331,6 @@ function Filelist(params) {
       </tr>
     );
   });
-
-  if (value.sharemode) {
-    viewtype.sharebt = (
-      <div>
-        <Alert key="info" variant="primary" id="copyal">
-          {value.sharemode}
-        </Alert>
-      </div>
-    );
-  }
-
-  if (value.viewmode) {
-    viewtype.viewbt = (
-      <div id="view">
-        {viewtype.viewbt}
-        <Badge bg="info" pill id="viewbg">
-          <img
-            src={`${process.env.PUBLIC_URL}/${viewtype.viewicon}`}
-            alt={viewtype.viewicon}
-            width={"24px"}
-            style={{ marginRight: "0.2em" }}
-          ></img>
-          {value.viewmode}
-        </Badge>
-      </div>
-    );
-  }
 
   return (
     <div id="filelist" style={{ width: context.viewsize }}>
@@ -334,8 +373,8 @@ function Filelist(params) {
           갱신하기
         </Button>
       </div>
-      {viewtype.sharebt}
-      {viewtype.viewbt}
+      {value.sharemode}
+      {value.viewmode}
     </div>
   );
 }

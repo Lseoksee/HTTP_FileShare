@@ -1,21 +1,35 @@
-class Utill {
+class Utils {
+  static Filetype(file) {
+    const extension = file.substring(file.lastIndexOf(".")).toLowerCase();
+
+    if (this.isvideo(extension)) {
+      return { type: "video", extension: extension };
+    } else if (this.isaudio(extension)) {
+      return { type: "audio", extension: extension };
+    } else if (this.isphoto(extension)) {
+      return { type: "photo", extension: extension };
+    } else if (this.istxt(extension)) {
+      return { type: "txt", extension: extension };
+    } else if (this.iszip(extension)) {
+      return { type: "zip", extension: extension };
+    }
+    return { type: "none", extension: extension };
+  }
+
   static isvideo(file) {
     const videoExtensions = [
       ".mp4",
       ".mkv",
       ".avi",
       ".mov",
-      ".wmv",
-      ".flv",
       ".webm",
       ".m4v",
       ".3gp",
       ".mpg",
       ".mpeg",
     ];
-    const extension = file.substring(file.lastIndexOf("."));
 
-    return videoExtensions.includes(extension.toLowerCase());
+    return videoExtensions.includes(file);
   }
 
   static isaudio(file) {
@@ -27,13 +41,11 @@ class Utill {
       ".ogg",
       ".wma",
       ".m4a",
-      ".aiff",
       ".alac",
       ".opus",
     ];
-    const extension = file.substring(file.lastIndexOf("."));
 
-    return audioExtensions.includes(extension.toLowerCase());
+    return audioExtensions.includes(file);
   }
 
   static isphoto(file) {
@@ -43,19 +55,14 @@ class Utill {
       ".png",
       ".gif",
       ".bmp",
-      ".tiff",
-      ".tif",
       ".svg",
       ".webp",
       ".ico",
-      ".raw",
-      ".psd",
     ];
-    const extension = file.substring(file.lastIndexOf("."));
 
-    return photoExtensions.includes(extension.toLowerCase());
+    return photoExtensions.includes(file);
   }
-  
+
   static iszip(file) {
     const zipExtensions = [
       ".zip",
@@ -73,28 +80,29 @@ class Utill {
       ".dmg",
       ".egg",
     ];
-    const extension = file.substring(file.lastIndexOf("."));
 
-    return zipExtensions.includes(extension.toLowerCase());
+    return zipExtensions.includes(file);
+  }
+
+  static istxt(file) {
+    const txtExtensions = [".txt", ".json", ".html", ".css", ".js", ".ini"];
+
+    return txtExtensions.includes(file);
   }
 
   static mapsize(size) {
     if (size < 1024) {
-      return {size: size, type: "B"}
-
-    } else if (size > 1024 &&  size < Math.pow(1024, 2)) {
-      return {size: size/1024,  type: "KB"}
-
-    } else if (size > Math.pow(1024, 2) &&  size < Math.pow(1024, 3)) {
-      return {size: size / Math.pow(1024, 2), type: "MB"}
-
+      return { size: size, type: "B" };
+    } else if (size > 1024 && size < Math.pow(1024, 2)) {
+      return { size: size / 1024, type: "KB" };
+    } else if (size > Math.pow(1024, 2) && size < Math.pow(1024, 3)) {
+      return { size: size / Math.pow(1024, 2), type: "MB" };
     } else if (size > Math.pow(1024, 3) && size < Math.pow(1024, 4)) {
-      return {size: size / Math.pow(1024, 3), type: "GB"}
-
+      return { size: size / Math.pow(1024, 3), type: "GB" };
     } else {
-      return {size: size / Math.pow(1024, 4), type: "TB"}
+      return { size: size / Math.pow(1024, 4), type: "TB" };
     }
   }
 }
 
-export default Utill;
+export default Utils;
