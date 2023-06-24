@@ -125,7 +125,11 @@ function Filelist(params) {
             <strong className="me-auto">{name}</strong>
           </Toast.Header>
           <Toast.Body id="txtoast_body">
-            <SyntaxHighlighter language={lan} style={vs} customStyle={{padding: "0"}} >
+            <SyntaxHighlighter
+              language={lan}
+              style={vs}
+              customStyle={{ padding: "0" }}
+            >
               {text}
             </SyntaxHighlighter>
           </Toast.Body>
