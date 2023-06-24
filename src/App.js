@@ -86,10 +86,19 @@ function Filelist(params) {
       const response = await fetch(encodeURI("view" + reforder + name));
       const text = await response.text();
       const lankey = new Map([
-        [".js", "javascript"],
         [".html", "htmlbars"],
         [".css", "css"],
+        [".js", "javascript"],
         [".json", "json"],
+        [".ini", "ini"],
+        [".properties", "properties"],
+        [".java", "java"],
+        [".c", "c"],
+        [".cpp", "cpp"],
+        [".py", "python"],
+        [".php", "php"],
+        [".sql", "sql"],
+        [".kt", "kotlin"],
       ]);
       const lan = lankey.get(type.extension) || "plaintext";
 

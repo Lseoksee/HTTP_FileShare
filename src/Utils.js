@@ -85,7 +85,22 @@ class Utils {
   }
 
   static istxt(file) {
-    const txtExtensions = [".txt", ".json", ".html", ".css", ".js", ".ini"];
+    const txtExtensions = [
+      ".txt",
+      ".json",
+      ".html",
+      ".css",
+      ".js",
+      ".ini",
+      ".properties",
+      ".java",
+      ".c",
+      ".cpp",
+      ".py",
+      ".php",
+      ".sql",
+      ".kt",
+    ];
 
     return txtExtensions.includes(file);
   }
