@@ -129,6 +129,7 @@ function Filelist(params) {
               language={lan}
               style={vs}
               customStyle={{ padding: "0" }}
+              showLineNumbers
             >
               {text}
             </SyntaxHighlighter>
