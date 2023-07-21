@@ -9,22 +9,22 @@ export const webcon = React.createContext();
 let viewsize;
 
 if (
-  //모바일 여부 확인
-  /Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  )
+    //모바일 여부 확인
+    /Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+    )
 ) {
-  viewsize = "90%";
+    viewsize = "90%";
 } else {
-  viewsize = "75%";
+    viewsize = "75%";
 }
 
 root.render(
-  <React.StrictMode>
-    <webcon.Provider value={{ viewsize: viewsize }}>
-      <App />
-    </webcon.Provider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <webcon.Provider value={{ viewsize: viewsize }}>
+            <App />
+        </webcon.Provider>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
