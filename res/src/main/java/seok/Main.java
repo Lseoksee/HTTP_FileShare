@@ -7,7 +7,6 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.awt.Desktop;
@@ -117,7 +116,7 @@ class readTH extends Main implements Runnable {
         try {
             ipAddr();
 
-            BufferedReader br = new BufferedReader(process.inputReader(Charset.forName("utf-8")));
+            BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream(), "utf-8"));
             String line;
             while ((line = br.readLine()) != null) {
                 System.out.println(line);
