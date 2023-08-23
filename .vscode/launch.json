@@ -15,10 +15,7 @@
             "name": "Node.js 로 실행",
             "program": "${file}",
             "request": "launch",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "node",
+            "type": "node"
         }
     ]
 }
