@@ -211,7 +211,7 @@ function Filelist(params) {
         } else if (e.isdir) {
             viewtype.icon = "logo512.png";
         } else {
-            viewtype.isview = true;
+            viewtype.icon = "doc.png";
         }
 
         if (e.size) viewtype.sizeshort = Utils.mapsize(e.size);
